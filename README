@@ -1,0 +1,66 @@
+LPS331 Pressure Sensor Userspace Driver for Linux
+Copyright (C) 2014 Hiroshi Takekawa
+
+*** Licensing Term
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License as
+published by the Free Software Foundation; version 2 of the
+License.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+
+ATTENTION: GPL version 2 only. You cannot apply any later version.
+This situation may change in the future.
+
+
+*** How to use
+
+Just type 'make' to compile.
+Run './lps331-get' to check if the device is connected and works.
+
+lps331 is the daemon to collect the pressure data every five minutes
+and puts into rrd database.
+rrd database create script is also provided as pressure-create-rrd.sh.
+Use rrdtool's rrdcgi to view the pressure graph via your browser.
+Below is the snippet of my sensors.cgi.
+
+<h2>Daily Pressure Summary</h2>
+<p>
+<RRD::GRAPH /var/www/sensord/daily-pressure.png
+        --imginfo '<img src=/sensord/%s width=%lu height=%lu>'
+        -a PNG
+        -h 200 -w 800
+        --lazy
+        -v 'Pressure (hPa)'
+        -t 'Pressure'
+        -x 'HOUR:1:HOUR:3:HOUR:3:0:%b %d %H:00'
+        -s -1d -l 0 -X 0 -l 950 -u 1050 -r -Y
+        DEF:temp1=/path/to/pressure.rrd:pressure:LAST
+        LINE2:temp1#c14040:"pressure">
+</p>
+<h2>Weekly PressureSummary</h2>
+<p>
+<RRD::GRAPH /var/www/sensord/weekly-pressure.png
+        --imginfo '<img src=/sensord/%s width=%lu height=%lu>'
+        -a PNG
+        -h 200 -w 800
+        --lazy
+        -v 'Pressure (hPa)'
+        -t 'Pressure'
+        -x 'HOUR:6:DAY:1:DAY:1:86400:%a %b %d'
+        -s -1w -l 0 -X 0 -l 950 -u 1050 -r -Y
+        DEF:temp1=/path/to/pressure.rrd:pressure:LAST
+        LINE2:temp1#c14040:"pressure">
+</p>
+
+
+*** Contact
+E-mail: Hiroshi Takekawa <sian@big.or.jp>
