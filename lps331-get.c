@@ -31,6 +31,7 @@
 #include <sys/ioctl.h>
 #include <linux/i2c-dev.h>
 
+#define LPS331_I2C_BUS       1
 #define LPS331_SLAVE_ADDR    0x5c
 
 #define LPS331_REG_WHO_AM_I          0x0f
@@ -132,7 +133,7 @@ int main(int argc, char **argv)
 	int fd, res;
 	double pressure;
 
-	if ((fd = open_i2c_dev(1)) < 0) {
+	if ((fd = open_i2c_dev(LPS331_I2C_BUS)) < 0) {
 		fprintf(stderr, "open_i2c_dev() failed: %s\n", strerror(errno));
 		return fd;
 	}
