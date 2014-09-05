@@ -1,4 +1,4 @@
-LPS331 Pressure Sensor Userspace Driver for Linux
+LPS331AP Pressure Sensor Userspace Driver for Linux
 Copyright (C) 2014 Hiroshi Takekawa
 
 *** Licensing Term
@@ -23,14 +23,22 @@ This situation may change in the future.
 
 *** How to use
 
-Just type 'make' to compile.
+First, find where your device is attached.  i.e. I2C bus and slave address.
+Adjust LPS331_I2C_BUS and LPS331_SLAVE_ADDR in lps331-get.c and lps331.c.
+Your device's slave address would be 0x5c or 0x5d, depending on how the
+device is wired.  i2cdetect might help you.
+
+Just type 'make' to compile on your target board.
+To cross-compile, adjust CC variable in Makefile. (Not tested)
+
 Run './lps331-get' to check if the device is connected and works.
 
 lps331 is the daemon to collect the pressure data every five minutes
-and puts into rrd database.
+and put into rrd database.
 rrd database create script is also provided as pressure-create-rrd.sh.
-Use rrdtool's rrdcgi to view the pressure graph via your browser.
+Use RRDtool's rrdcgi to view the pressure graph via your browser.
 Below is the snippet of my sensors.cgi.
+See http://oss.oetiker.ch/rrdtool/ about RRDtool.
 
 <h2>Daily Pressure Summary</h2>
 <p>
