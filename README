@@ -26,12 +26,18 @@ This situation may change in the future.
 First, find where your device is attached.  i.e. I2C bus and slave address.
 Adjust LPS331_I2C_BUS and LPS331_SLAVE_ADDR in lps331-get.c and lps331.c.
 Your device's slave address would be 0x5c or 0x5d, depending on how the
-device is wired.  i2cdetect might help you.
+device is wired.  i2cdetect might help you.  Default value of LPS331_I2C_BUS
+is 1, which is suitable for Raspberry Pi.
 
 Just type 'make' to compile on your target board.
 To cross-compile, adjust CC variable in Makefile. (Not tested)
 
 Run './lps331-get' to check if the device is connected and works.
+$ ./lps331-get 
+pressure = 1003.48
+
+You should have the permission to access to the I2C busses.  You should
+be either in the member of 'i2c' group or root.
 
 lps331 is the daemon to collect the pressure data every five minutes
 and put into rrd database.
